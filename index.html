@@ -1,61 +1,133 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Missão Secreta</title>
+<meta charset="UTF-8">
+<title>Ligação</title>
 
-  <style>
-    body {
-      background: black;
-      color: white;
-      font-family: Arial;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
+<style>
+body {
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial;
+}
 
-    button {
-      background: white;
-      color: black;
-      padding: 15px 25px;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      margin: 10px;
-    }
-  </style>
+/* CELULAR */
+.phone {
+  width: 320px;
+  height: 600px;
+  background: black;
+  border-radius: 35px;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* ANIMAÇÃO DE VIBRAR */
+.vibrando {
+  animation: vibrar 0.1s infinite;
+}
+
+@keyframes vibrar {
+  0% { transform: translate(1px, 1px); }
+  25% { transform: translate(-1px, -2px); }
+  50% { transform: translate(-3px, 0px); }
+  75% { transform: translate(3px, 2px); }
+  100% { transform: translate(1px, -1px); }
+}
+
+h1 {
+  margin-top: 60px;
+  font-size: 22px;
+}
+
+.caller {
+  margin-top: 40px;
+  font-size: 26px;
+}
+
+.status {
+  margin-top: 10px;
+  color: gray;
+}
+
+/* BOTÕES */
+.buttons {
+  position: absolute;
+  bottom: 60px;
+  width: 100%;
+}
+
+button {
+  width: 120px;
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.accept {
+  background: #2ecc71;
+  color: white;
+}
+
+.reject {
+  background: #e74c3c;
+  color: white;
+}
+</style>
 </head>
+
 <body>
 
-  <div>
-    <h1>📞 Chamada Perdida...</h1>
-    <p>Nem todo mundo chegou até aqui 👀</p>
+<div id="phone" class="phone vibrando">
+  
+  <h1>📞 Ligação Recebida</h1>
+  
+  <div class="caller">Chamada Misteriosa</div>
+  <div class="status">Vibrando...</div>
 
-    <button onclick="iniciarMissao()">Aceitar Desafio</button>
-
-    <div id="etapa"></div>
+  <div class="buttons">
+    <button class="accept" onclick="atender()">Aceitar</button>
+    <button class="reject" onclick="recusar()">Recusar</button>
   </div>
 
-  <script>
-    function iniciarMissao() {
-      document.getElementById("etapa").innerHTML = `
-        <p>🧠 Teste rápido:</p>
-        <button onclick="resposta()">Resultado rápido</button>
-        <button onclick="resposta()">Resultado garantido</button>
-      `;
-    }
+</div>
 
-    function resposta() {
-      document.getElementById("etapa").innerHTML = `
-        <p>Interessante escolha 😏</p>
-        <a href="https://seu-video.com" target="_blank">
-          🎥 Assistir vídeo secreto
-        </a>
-      `;
-    }
-  </script>
+<script>
+function pararVibracao() {
+  document.getElementById("phone").classList.remove("vibrando");
+}
+
+function atender() {
+  pararVibracao();
+  document.querySelector(".status").innerText = "Ligação Atendida 😏";
+  
+  setTimeout(() => {
+    document.querySelector(".caller").innerHTML = `
+      Missão desbloqueada 👀
+      <br><br>
+      <a href="https://seu-link.com" style="color:#2ecc71">
+        Entrar na missão
+      </a>
+    `;
+  }, 800);
+}
+
+function recusar() {
+  pararVibracao();
+  document.querySelector(".status").innerText = "Ligação Recusada ❌";
+}
+</script>
 
 </body>
 </html>
+
