@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ligação</title>
-
 <style>
 body {
   background: black;
@@ -16,7 +15,6 @@ body {
   font-family: Arial, sans-serif;
   color: white;
 }
-
 .phone {
   width: 90vw;
   max-width: 320px;
@@ -30,12 +28,7 @@ body {
   background: black;
   box-sizing: border-box;
 }
-
-/* VIBRAÇÃO */
-.vibrando {
-  animation: vibrar 0.18s infinite;
-}
-
+.vibrando { animation: vibrar 0.18s infinite; }
 @keyframes vibrar {
   0% { transform: translate(0px, 0px); }
   25% { transform: translate(-1px, 1px); }
@@ -43,78 +36,51 @@ body {
   75% { transform: translate(-1px, -1px); }
   100% { transform: translate(1px, 1px); }
 }
-
-h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.status {
-  color: gray;
-  margin-bottom: 40px;
-  font-size: 16px;
-}
-
+h2 { font-size: 24px; margin-bottom: 10px; }
+.status { color: gray; margin-bottom: 40px; font-size: 16px; }
 button {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: none;
-  font-size: 22px;
-  color: white;
-  margin: 20px;
-  cursor: pointer;
+  width: 70px; height: 70px;
+  border-radius: 50%; border: none;
+  font-size: 22px; color: white;
+  margin: 20px; cursor: pointer;
 }
-
 .accept { background: #34c759; }
 .reject { background: #ff3b30; }
-
-button:active {
-  transform: scale(0.9);
-}
+button:active { transform: scale(0.9); }
 </style>
 </head>
-
 <body>
 
 <div id="phone" class="phone vibrando">
-  
   <h2>Origon Investimentos</h2>
   <div id="status" class="status">Vibrando...</div>
 
   <button class="reject" onclick="recusar()">✕</button>
   <button class="accept" onclick="atender()">✓</button>
 
-  <!-- SOM DA VIBRAÇÃO -->
   <audio id="som" loop>
     <source src="vibracao.mp3" type="audio/mpeg">
   </audio>
-
 </div>
 
 <script>
 const som = document.getElementById("som");
 
-// Libera som no primeiro toque do usuário (requisito mobile)
-document.addEventListener("click", () => {
-  som.play().catch(() => console.log("Som bloqueado pelo navegador, aguarde toque."));
-}, { once: true });
+// Libera som no primeiro toque
+document.addEventListener("click", () => { som.play(); }, { once: true });
 
-// Função para parar vibração e som
 function pararTudo() {
   document.getElementById("phone").classList.remove("vibrando");
   som.pause();
   som.currentTime = 0;
 }
 
-// Função do botão Aceitar
 function atender() {
-  pararTudo(); // para vibração e som
-  // Redireciona para tela2.html
-  window.location.href = "tela2.html";
+  pararTudo();
+  // Redireciona para tela2.html na raiz pública
+  window.location.href = "/tela2.html";
 }
 
-// Função do botão Recusar
 function recusar() {
   pararTudo();
   document.getElementById("status").innerText = "Ligação Recusada ❌";
@@ -123,6 +89,7 @@ function recusar() {
 
 </body>
 </html>
+
 
 
 
