@@ -83,7 +83,7 @@ button:active {
 
   <!-- SOM -->
   <audio id="som" loop>
-    <source src="vibracao.mp3" type="audio/mpeg">
+    <source src="vibracao.mp3">
   </audio>
 
 </div>
@@ -91,12 +91,10 @@ button:active {
 <script>
 const som = document.getElementById("som");
 
-/* SOM INICIA JUNTO COM A TELA */
-som.play().catch(() => {
-  document.body.addEventListener("click", () => {
-    som.play();
-  }, { once: true });
-});
+/* DESBLOQUEIO UNIVERSAL DE ÁUDIO */
+document.body.addEventListener("click", () => {
+  som.play();
+}, { once: true });
 
 function pararTudo() {
   document.getElementById("phone").classList.remove("vibrando");
@@ -116,6 +114,7 @@ function recusar() {
 
 </body>
 </html>
+
 
 
 
