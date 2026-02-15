@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Missão Secreta</title>
+
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    button {
+      background: white;
+      color: black;
+      padding: 15px 25px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <h1>📞 Chamada Perdida...</h1>
+    <p>Nem todo mundo chegou até aqui 👀</p>
+
+    <button onclick="iniciarMissao()">Aceitar Desafio</button>
+
+    <div id="etapa"></div>
+  </div>
+
+  <script>
+    function iniciarMissao() {
+      document.getElementById("etapa").innerHTML = `
+        <p>🧠 Teste rápido:</p>
+        <button onclick="resposta()">Resultado rápido</button>
+        <button onclick="resposta()">Resultado garantido</button>
+      `;
+    }
+
+    function resposta() {
+      document.getElementById("etapa").innerHTML = `
+        <p>Interessante escolha 😏</p>
+        <a href="https://seu-video.com" target="_blank">
+          🎥 Assistir vídeo secreto
+        </a>
+      `;
+    }
+  </script>
+
+</body>
+</html>
