@@ -3,38 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conectando</title>
+
+<title>Ligação em andamento</title>
 
 <style>
 body {
   background: black;
+  margin: 0;
+  font-family: Arial;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
-  font-family: Arial;
   text-align: center;
 }
 
-h1 {
-  font-size: 24px;
+.phone {
+  width: 90vw;
+  max-width: 320px;
+
+  height: 85vh;
+  max-height: 640px;
+
+  border: 2px solid #222;
+  border-radius: 35px;
+  background: black;
+  padding-top: 100px;
+  box-sizing: border-box;
+}
+
+h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
 }
 
 .status {
-  color: gray;
-  margin-top: 10px;
+  color: #34c759;
+  margin-bottom: 40px;
+  font-size: 16px;
+}
+
+.timer {
+  font-size: 32px;
+  margin-bottom: 50px;
+  letter-spacing: 2px;
+}
+
+button {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  font-size: 22px;
+  color: white;
+  background: #ff3b30;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.9);
 }
 </style>
 </head>
 
 <body>
 
-<div>
-  <h1>Conectando ligação...</h1>
-  <div class="status">Aguarde um instante</div>
+<div class="phone">
+  
+  <h2>Origon Investimentos</h2>
+  <div class="status">Ligação em andamento</div>
+
+  <div id="timer" class="timer">00:00</div>
+
+  <button onclick="encerrar()">✕</button>
+
+  <!-- ÁUDIO DA LIGAÇÃO -->
+  <audio id="audioLigacao" autoplay>
+    <source src="ligacao.mp3" type="audio/mpeg">
+  </audio>
+
 </div>
+
+<script>
+let segundos = 0;
+
+setInterval(() => {
+  segundos++;
+
+  let min = String(Math.floor(segundos / 60)).padStart(2, '0');
+  let sec = String(segundos % 60).padStart(2, '0');
+
+  document.getElementById("timer").innerText = `${min}:${sec}`;
+}, 1000);
+
+function encerrar() {
+  document.getElementById("audioLigacao").pause();
+  window.location.href = "tela3.html";
+}
+</script>
 
 </body>
 </html>
