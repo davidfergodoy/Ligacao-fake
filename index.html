@@ -88,6 +88,7 @@ button:active {
   <button class="reject" onclick="recusar()">✕</button>
   <button class="accept" onclick="atender()">✓</button>
 
+  <!-- SOM DA VIBRAÇÃO -->
   <audio id="som" loop>
     <source src="vibracao.mp3" type="audio/mpeg">
   </audio>
@@ -97,7 +98,7 @@ button:active {
 <script>
 const som = document.getElementById("som");
 
-/* ÁUDIO LIBERADO AO PRIMEIRO TOQUE */
+/* SOM LIBERADO NO PRIMEIRO TOQUE */
 document.addEventListener("click", () => {
   som.play();
 }, { once: true });
