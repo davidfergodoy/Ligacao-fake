@@ -9,39 +9,18 @@ body {
   background: black;
   color: white;
   font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  text-align: center;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  height: 100vh; margin: 0; text-align: center;
 }
-
-h2 {
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
-p {
-  font-size: 18px;
-  color: #ccc;
-  margin-bottom: 30px;
-}
-
+h2 { font-size: 28px; margin-bottom: 20px; }
+p { font-size: 18px; color: #ccc; margin-bottom: 30px; }
 button {
-  padding: 15px 25px;
-  font-size: 18px;
-  border-radius: 12px;
-  border: none;
-  background: #34c759;
-  color: white;
-  cursor: pointer;
+  padding: 15px 25px; font-size: 18px;
+  border-radius: 12px; border: none;
+  background: #34c759; color: white; cursor: pointer;
 }
-
-button:active {
-  transform: scale(0.95);
-}
+button:active { transform: scale(0.95); }
 </style>
 </head>
 <body>
@@ -50,7 +29,6 @@ button:active {
 <p id="mensagem">Conectando...</p>
 <button id="responderBtn">Responder</button>
 
-<!-- SOM DE FUNDO: ambiente de ligação -->
 <audio id="bgAudio" loop>
   <source src="call_background.mp3" type="audio/mpeg">
 </audio>
@@ -60,7 +38,6 @@ const bgAudio = document.getElementById("bgAudio");
 const mensagemEl = document.getElementById("mensagem");
 const btn = document.getElementById("responderBtn");
 
-// Sequência de frases simulando conversa
 const conversa = [
   "Olá! Aqui é da Origon Investimentos.",
   "Estamos entrando em contato para apresentar uma oportunidade incrível.",
@@ -70,24 +47,19 @@ const conversa = [
 
 let passo = 0;
 
-// Função para falar uma frase
 function falar(texto) {
   const utterance = new SpeechSynthesisUtterance(texto);
-  utterance.lang = "pt-BR";
-  utterance.rate = 1; // velocidade
-  utterance.pitch = 1; // tom
+  utterance.lang = "pt-BR"; utterance.rate = 1; utterance.pitch = 1;
   speechSynthesis.speak(utterance);
   mensagemEl.innerText = texto;
 }
 
-// Iniciar som de fundo e primeira frase
 function iniciarLigacao() {
   bgAudio.play().catch(() => console.log("Autoplay bloqueado."));
   falar(conversa[passo]);
   btn.style.display = "inline-block";
 }
 
-// Avança a conversa ao clicar em “Responder”
 btn.addEventListener("click", () => {
   passo++;
   if(passo < conversa.length) {
@@ -99,7 +71,6 @@ btn.addEventListener("click", () => {
   }
 });
 
-// Inicia automaticamente
 iniciarLigacao();
 </script>
 
