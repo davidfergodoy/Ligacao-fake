@@ -97,7 +97,7 @@ button:active {
 <script>
 const som = document.getElementById("som");
 
-/* MÉTODO MAIS ESTÁVEL POSSÍVEL */
+/* ÁUDIO LIBERADO AO PRIMEIRO TOQUE */
 document.addEventListener("click", () => {
   som.play();
 }, { once: true });
@@ -109,7 +109,7 @@ function pararTudo() {
 
 function atender() {
   pararTudo();
-  document.getElementById("status").innerText = "Ligação Atendida 😏";
+  window.location.href = "tela2.html";
 }
 
 function recusar() {
@@ -120,6 +120,7 @@ function recusar() {
 
 </body>
 </html>
+
 
 
 
