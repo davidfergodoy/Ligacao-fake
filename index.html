@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Ligação</title>
 
 <style>
@@ -14,17 +13,15 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   color: white;
 }
 
 .phone {
   width: 90vw;
   max-width: 320px;
-
   height: 85vh;
   max-height: 640px;
-
   border: 2px solid #222;
   border-radius: 35px;
   text-align: center;
@@ -98,7 +95,7 @@ button:active {
 <script>
 const som = document.getElementById("som");
 
-/* SOM LIBERADO NO PRIMEIRO TOQUE */
+// Libera som no primeiro toque do usuário (requisito mobile)
 document.addEventListener("click", () => {
   som.play();
 }, { once: true });
@@ -106,10 +103,12 @@ document.addEventListener("click", () => {
 function pararTudo() {
   document.getElementById("phone").classList.remove("vibrando");
   som.pause();
+  som.currentTime = 0;
 }
 
 function atender() {
   pararTudo();
+  // Redireciona para a segunda tela
   window.location.href = "tela2.html";
 }
 
@@ -121,6 +120,7 @@ function recusar() {
 
 </body>
 </html>
+
 
 
 
