@@ -97,21 +97,24 @@ const som = document.getElementById("som");
 
 // Libera som no primeiro toque do usuário (requisito mobile)
 document.addEventListener("click", () => {
-  som.play();
+  som.play().catch(() => console.log("Som bloqueado pelo navegador, aguarde toque."));
 }, { once: true });
 
+// Função para parar vibração e som
 function pararTudo() {
   document.getElementById("phone").classList.remove("vibrando");
   som.pause();
   som.currentTime = 0;
 }
 
+// Função do botão Aceitar
 function atender() {
-  pararTudo();
-  // Redireciona para a segunda tela
+  pararTudo(); // para vibração e som
+  // Redireciona para tela2.html
   window.location.href = "tela2.html";
 }
 
+// Função do botão Recusar
 function recusar() {
   pararTudo();
   document.getElementById("status").innerText = "Ligação Recusada ❌";
