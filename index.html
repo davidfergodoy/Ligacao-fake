@@ -27,7 +27,7 @@ body {
   background: black;
 }
 
-/* VIBRAÇÃO SUAVE */
+/* VIBRAÇÃO */
 .vibrando {
   animation: vibrar 0.18s infinite;
 }
@@ -91,10 +91,12 @@ button:active {
 <script>
 const som = document.getElementById("som");
 
-/* DESBLOQUEIO DE ÁUDIO (CRUCIAL) */
-document.body.addEventListener("click", () => {
-  som.play();
-}, { once: true });
+/* SOM INICIA JUNTO COM A TELA */
+som.play().catch(() => {
+  document.body.addEventListener("click", () => {
+    som.play();
+  }, { once: true });
+});
 
 function pararTudo() {
   document.getElementById("phone").classList.remove("vibrando");
@@ -114,6 +116,7 @@ function recusar() {
 
 </body>
 </html>
+
 
 
 
