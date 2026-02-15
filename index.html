@@ -7,7 +7,7 @@
 <style>
 body {
   margin: 0;
-  background: linear-gradient(135deg, #1a1a1a, #000);
+  background: black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,36 +19,36 @@ body {
 .phone {
   width: 320px;
   height: 640px;
-  background: rgba(0,0,0,0.85);
+  background: black;
   border-radius: 40px;
   color: white;
   text-align: center;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+  box-shadow: 0 0 40px rgba(0,0,0,0.9);
 }
 
-/* VIBRAÇÃO */
+/* VIBRAÇÃO SUAVE */
 .vibrando {
-  animation: vibrar 0.15s infinite;
+  animation: vibrar 0.18s infinite;
 }
 
 @keyframes vibrar {
-  0% { transform: translate(1px, 1px); }
-  50% { transform: translate(-1px, -1px); }
-  100% { transform: translate(1px, -1px); }
+  0% { transform: translate(0px, 0px); }
+  25% { transform: translate(-1px, 1px); }
+  50% { transform: translate(1px, -1px); }
+  75% { transform: translate(-1px, -1px); }
+  100% { transform: translate(1px, 1px); }
 }
 
-/* CONTEÚDO */
 .content {
-  padding-top: 80px;
+  padding-top: 90px;
 }
 
 h1 {
   font-size: 18px;
   font-weight: 400;
-  color: #aaa;
+  color: #888;
 }
 
 /* FOTO */
@@ -56,69 +56,69 @@ h1 {
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  background: linear-gradient(45deg, #444, #222);
+  background: #222;
   margin: 40px auto 20px;
-  box-shadow: 0 0 25px rgba(255,255,255,0.1);
+  box-shadow: 0 0 30px rgba(255,255,255,0.05);
 }
 
 /* NOME */
 .caller {
-  font-size: 26px;
+  font-size: 28px;
   margin-top: 10px;
+  font-weight: 500;
 }
 
 .status {
   font-size: 16px;
-  color: gray;
-  margin-top: 5px;
+  color: #777;
+  margin-top: 8px;
 }
 
 /* BOTÕES */
 .buttons {
   position: absolute;
-  bottom: 70px;
+  bottom: 80px;
   width: 100%;
   display: flex;
   justify-content: space-around;
 }
 
 .btn {
-  width: 70px;
-  height: 70px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   border: none;
-  font-size: 14px;
+  font-size: 16px;
   color: white;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .reject {
-  background: #e74c3c;
+  background: #ff3b30;
 }
 
 .accept {
-  background: #2ecc71;
+  background: #34c759;
 }
 
-.btn:hover {
-  transform: scale(1.1);
+.btn:active {
+  transform: scale(0.9);
 }
 
-/* TEXTO BOTÕES */
 .label {
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 13px;
-  color: #ccc;
+  color: #aaa;
 }
 
-/* ANIMAÇÃO SUAVE */
+/* TRANSIÇÃO */
 .fade {
   animation: fade 0.4s ease;
 }
 
 @keyframes fade {
-  from { opacity: 0; transform: scale(0.9); }
+  from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
 </style>
@@ -149,43 +149,51 @@ h1 {
     </div>
   </div>
 
+<!-- SOM -->
+<audio id="som" autoplay loop>
+  <source src="vibracao.mp3" type="audio/mpeg">
+</audio>
+
 </div>
 
 <script>
-function pararVibracao() {
+const som = document.getElementById("som");
+
+function pararTudo() {
   document.getElementById("phone").classList.remove("vibrando");
+  som.pause();
 }
 
 function atender() {
-  pararVibracao();
-
+  pararTudo();
   document.querySelector(".status").innerText = "Ligação Atendida";
-  
+
   setTimeout(() => {
     document.querySelector(".content").innerHTML = `
       <div class="fade">
-        <div style="margin-top:120px;font-size:24px;">
+        <div style="margin-top:130px;font-size:26px;">
           Missão desbloqueada 👀
         </div>
 
         <br><br>
 
         <a href="https://seu-link.com" 
-           style="color:#2ecc71;font-size:18px;text-decoration:none;">
+           style="color:#34c759;font-size:18px;text-decoration:none;">
           Entrar na missão
         </a>
       </div>
     `;
-  }, 700);
+  }, 600);
 }
 
 function recusar() {
-  pararVibracao();
+  pararTudo();
   document.querySelector(".status").innerText = "Ligação Recusada";
 }
 </script>
 
 </body>
 </html>
+
 
 
