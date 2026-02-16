@@ -89,5 +89,135 @@ button {
 
 <div class="phone">
 
-  <h2>Orig
+  <h2>Origon Investimentos</h2>
+  <div class="status">Ligação em andamento...</div>
+  <div id="timer" class="timer">00:00</div>
+
+  <button onclick="encerrar()">Encerrar</button>
+
+  <!-- ÁUDIO PRINCIPAL -->
+  <audio id="callAudio">
+    <source src="ligacao.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- SOM DE FUNDO -->
+  <audio id="bgAudio" loop>
+    <source src="call_background.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- TELA DE FALHA -->
+  <div id="signalLoss" class="signal-loss">
+    <div class="glitch">⚠️ Falha de Sinal</div>
+    <div style="margin-top:10px; font-size:16px; color:gray;">
+      Reconectando...
+    </div>
+  </div>
+
+</div>
+
+<script>
+let segundos = 0;
+let intervalo;
+let falhaAtivada = false;
+
+const callAudio = document.getElementById("callAudio");
+const bgAudio = document.getElementById("bgAudio");
+const signalLoss = document.getElementById("signalLoss");
+
+// TIMER
+function atualizarTimer() {
+  segundos++;
+
+  const minutos = Math.floor(segundos / 60);
+  const secs = segundos % 60;
+
+  const formatado =
+    String(minutos).padStart(2, '0') + ":" +
+    String(secs).padStart(2, '0');
+
+  document.getElementById("timer").innerText = formatado;
+}
+
+function iniciarTimer() {
+  intervalo = setInterval(atualizarTimer, 1000);
+}
+
+// EFEITO DE FALHA
+function ativarFalha() {
+  falhaAtivada = true;
+
+  document.querySelector(".status").innerText = "Sinal instável...";
+  signalLoss.style.opacity = 1;
+
+  // Distorção visual leve
+  document.querySelector(".phone").classList.add("glitch");
+
+  // Após 2.5s derruba ligação
+  setTimeout(() => {
+    encerrarForcado();
+  }, 2500);
+}
+
+// INICIAR
+window.onload = () => {
+  iniciarTimer();
+
+  callAudio.play().catch(() => {});
+  bgAudio.play().catch(() => {});
+
+  document.body.addEventListener("click", () => {
+    callAudio.play();
+    bgAudio.play();
+  }, { once: true });
+
+  // MONITORAR TEMPO DO ÁUDIO
+  callAudio.ontimeupdate = () => {
+
+    // 🔥 AJUSTE ESTE TEMPO
+    if(callAudio.currentTime >= 8 && !falhaAtivada) {
+      ativarFalha();
+    }
+  };
+
+  callAudio.onended = () => {
+    encerrar();
+  };
+};
+
+// ENCERRAR NORMAL
+function encerrar() {
+  clearInterval(intervalo);
+  callAudio.pause();
+  bgAudio.pause();
+
+  document.querySelector(".status").innerText = "Ligação encerrada";
+}
+
+// ENCERRAR FORÇADO (queda de sinal)
+function encerrarForcado() {
+  clearInterval(intervalo);
+  callAudio.pause();
+  bgAudio.pause();
+
+  document.querySelector(".status").innerText = "Ligação perdida ❌";
+  signalLoss.innerHTML = `
+    <div>📡 Sinal Perdido</div>
+  `;
+}
+
+// BOTÃO
+function encerrarManual() {
+  encerrar();
+}
+
+function encerrar() {
+  clearInterval(intervalo);
+  callAudio.pause();
+  bgAudio.pause();
+  document.querySelector(".status").innerText = "Ligação encerrada";
+}
+</script>
+
+</body>
+</html>
 
