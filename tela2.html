@@ -30,16 +30,22 @@ body {
   background: radial-gradient(circle at top,
       #2a2a2a 0%,
       #000 60%);
-
-  display: flex;
-  flex-direction: column;
 }
 
+/* 🔥 ÁREA ROLÁVEL */
+.content {
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 120px; /* espaço pro botão encerrar */
+}
+
+/* 🌫 GLASS */
 .glass {
   position: absolute;
   inset: 0;
   backdrop-filter: blur(18px);
   background: rgba(0,0,0,0.35);
+  pointer-events: none;
 }
 
 /* 📶 SINAL */
@@ -57,18 +63,11 @@ body {
   height: 18px;
   background: #34c759;
   border-radius: 3px;
-  transition: 0.3s;
 }
 
 /* 👤 CONTATO */
 .contact {
   padding-top: 70px;
-  z-index: 2;
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
 }
 
@@ -76,7 +75,7 @@ body {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  margin-bottom: 15px;
+  margin: 0 auto 15px;
 
   background: url("avatar.png") center/cover;
   border: 3px solid rgba(255,255,255,0.15);
@@ -107,22 +106,17 @@ h2 {
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
   padding: 0 25px;
-  z-index: 2;
-  position: relative;
 }
 
 .control-btn {
   height: 58px;
   border-radius: 22px;
   border: 1px solid rgba(255,255,255,0.08);
-
   background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
 
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.2s;
 }
 
 .control-btn svg {
@@ -132,22 +126,6 @@ h2 {
   stroke: white;
 }
 
-.control-btn.active {
-  background: #34c759;
-}
-
-.control-btn.active svg {
-  fill: black;
-}
-
-.control-btn.active svg path {
-  stroke: black;
-}
-
-.control-btn:active {
-  transform: scale(0.92);
-}
-
 /* 🔢 TECLADO */
 .keypad {
   margin-top: 15px;
@@ -155,16 +133,12 @@ h2 {
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
   padding: 0 30px;
-  z-index: 2;
-  position: relative;
 }
 
 .key {
   height: 65px;
   border-radius: 50%;
-
   background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.08);
 
   display: flex;
@@ -178,14 +152,14 @@ h2 {
 .key span {
   font-size: 10px;
   color: rgba(255,255,255,0.4);
-  margin-top: 2px;
-  letter-spacing: 1px;
 }
 
-/* 🔴 ENCERRAR */
+/* 🔴 ENCERRAR FIXO */
 .end-call {
-  margin-top: auto;
-  margin-bottom: 25px;
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
 
   width: 72px;
   height: 72px;
@@ -194,9 +168,7 @@ h2 {
   border: none;
   color: white;
   font-size: 14px;
-  cursor: pointer;
-  z-index: 2;
-  position: relative;
+  z-index: 5;
 }
 
 /* ⚠️ OVERLAY */
@@ -211,23 +183,7 @@ h2 {
   font-size: 22px;
   opacity: 0;
   transition: 0.3s;
-  z-index: 3;
-}
-
-/* 💥 EFEITOS */
-.glitch { animation: glitch 0.09s infinite; }
-.shake { animation: shake 0.12s infinite; }
-
-@keyframes glitch {
-  0% { transform: translate(3px, -3px); }
-  50% { transform: translate(-3px, 3px); }
-  100% { transform: translate(0, 0); }
-}
-
-@keyframes shake {
-  0% { transform: translateX(2px); }
-  50% { transform: translateX(-2px); }
-  100% { transform: translateX(2px); }
+  z-index: 10;
 }
 </style>
 </head>
@@ -245,87 +201,73 @@ h2 {
     <div class="bar" id="bar4"></div>
   </div>
 
-  <div class="contact">
-    <div class="avatar"></div>
-    <h2>Origon Investimentos</h2>
-    <div class="status">Ligação em andamento...</div>
-    <div id="timer" class="timer">00:00</div>
-  </div>
+  <div class="content">
 
-  <div class="controls">
-
-    <div id="muteBtn" class="control-btn" onclick="toggleMute()">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/>
-      </svg>
+    <div class="contact">
+      <div class="avatar"></div>
+      <h2>Origon Investimentos</h2>
+      <div class="status">Ligação em andamento...</div>
+      <div id="timer" class="timer">00:00</div>
     </div>
 
-    <div id="speakerBtn" class="control-btn" onclick="toggleSpeaker()">
-      <svg viewBox="0 0 24 24">
-        <path d="M3 10v4h4l5 5V5L7 10H3z"/>
-      </svg>
+    <div class="controls">
+
+      <div class="control-btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/>
+        </svg>
+      </div>
+
+      <div class="control-btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 10v4h4l5 5V5L7 10H3z"/>
+        </svg>
+      </div>
+
+      <div class="control-btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+
     </div>
 
-    <div id="saveBtn" class="control-btn" onclick="salvar()">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+    <div class="keypad">
+      <div class="key">1</div>
+      <div class="key">2 <span>ABC</span></div>
+      <div class="key">3 <span>DEF</span></div>
+
+      <div class="key">4 <span>GHI</span></div>
+      <div class="key">5 <span>JKL</span></div>
+      <div class="key">6 <span>MNO</span></div>
+
+      <div class="key">7 <span>PQRS</span></div>
+      <div class="key">8 <span>TUV</span></div>
+      <div class="key">9 <span>WXYZ</span></div>
+
+      <div class="key">*</div>
+      <div class="key">0</div>
+      <div class="key">#</div>
     </div>
 
   </div>
 
-  <div class="keypad">
-    <div class="key">1</div>
-    <div class="key">2 <span>ABC</span></div>
-    <div class="key">3 <span>DEF</span></div>
-
-    <div class="key">4 <span>GHI</span></div>
-    <div class="key">5 <span>JKL</span></div>
-    <div class="key">6 <span>MNO</span></div>
-
-    <div class="key">7 <span>PQRS</span></div>
-    <div class="key">8 <span>TUV</span></div>
-    <div class="key">9 <span>WXYZ</span></div>
-
-    <div class="key">*</div>
-    <div class="key">0</div>
-    <div class="key">#</div>
-  </div>
-
-  <button class="end-call" onclick="encerrar()">Encerrar</button>
+  <button class="end-call">Encerrar</button>
 
   <audio id="callAudio">
     <source src="ligacao.mp3" type="audio/mpeg">
   </audio>
 
-  <audio id="noiseAudio" loop>
-    <source src="interferencia.mp3" type="audio/mpeg">
-  </audio>
-
-  <audio id="dropAudio">
-    <source src="queda.mp3" type="audio/mpeg">
-  </audio>
-
   <div id="signalLoss" class="signal-loss">
     <div>📡 Falha de Sinal</div>
-    <div style="font-size:16px; color:gray; margin-top:10px;">
-      Reconectando...
-    </div>
   </div>
 
 </div>
 
 <script>
 let segundos = 0;
-let intervalo;
-let falhaAtivada = false;
 
-const callAudio = document.getElementById("callAudio");
-const noiseAudio = document.getElementById("noiseAudio");
-const dropAudio = document.getElementById("dropAudio");
-const signalLoss = document.getElementById("signalLoss");
-
-function atualizarTimer() {
+setInterval(() => {
   segundos++;
   const minutos = Math.floor(segundos / 60);
   const secs = segundos % 60;
@@ -333,98 +275,7 @@ function atualizarTimer() {
   document.getElementById("timer").innerText =
     String(minutos).padStart(2, '0') + ":" +
     String(secs).padStart(2, '0');
-}
-
-function iniciarTimer() {
-  intervalo = setInterval(atualizarTimer, 1000);
-}
-
-function toggleMute() {
-  document.getElementById("muteBtn").classList.toggle("active");
-}
-
-function toggleSpeaker() {
-  document.getElementById("speakerBtn").classList.toggle("active");
-}
-
-function salvar() {
-  const btn = document.getElementById("saveBtn");
-  btn.classList.add("active");
-  setTimeout(() => btn.classList.remove("active"), 700);
-}
-
-function derrubarSinal() {
-  bar4.style.opacity = 0;
-  setTimeout(() => bar3.style.opacity = 0, 200);
-  setTimeout(() => bar2.style.opacity = 0, 400);
-  setTimeout(() => bar1.style.opacity = 0, 600);
-}
-
-function ativarFalha() {
-  falhaAtivada = true;
-
-  document.querySelector(".status").innerText = "Sinal instável...";
-  signalLoss.style.opacity = 1;
-
-  document.querySelector(".phone").classList.add("glitch");
-  document.querySelector(".phone").classList.add("shake");
-
-  noiseAudio.play();
-  derrubarSinal();
-
-  setTimeout(() => {
-
-      noiseAudio.pause();
-      dropAudio.play();
-
-      document.querySelector(".status").innerText = "Reconectando...";
-
-      setTimeout(resetTela, 1500);
-
-  }, 1800);
-}
-
-function resetTela() {
-
-  clearInterval(intervalo);
-  callAudio.pause();
-
-  segundos = 0;
-  document.getElementById("timer").innerText = "00:00";
-
-  bar1.style.opacity = 1;
-  bar2.style.opacity = 1;
-  bar3.style.opacity = 1;
-  bar4.style.opacity = 1;
-
-  document.querySelector(".phone").classList.remove("glitch");
-  document.querySelector(".phone").classList.remove("shake");
-
-  signalLoss.style.opacity = 0;
-
-  document.querySelector(".status").innerText = "Chamada encerrada";
-
-  falhaAtivada = false;
-}
-
-window.onload = () => {
-  iniciarTimer();
-  callAudio.play().catch(() => {});
-
-  callAudio.ontimeupdate = () => {
-    if(callAudio.duration &&
-       callAudio.currentTime >= callAudio.duration - 1.2 &&
-       !falhaAtivada) {
-
-        ativarFalha();
-    }
-  };
-};
-
-function encerrar() {
-  clearInterval(intervalo);
-  callAudio.pause();
-}
+}, 1000);
 </script>
 
 </body>
