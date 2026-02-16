@@ -60,7 +60,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* BOTÕES SUPERIORES 🔥 */
+/* CONTROLES */
 .controls {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -70,24 +70,35 @@ body {
 }
 
 .control-btn {
-  height: 55px;
-  border-radius: 18px;
-  border: 1px solid #333;
+  height: 58px;
+  border-radius: 20px;
+  border: 1px solid #2a2a2a;
   background: #111;
-  color: white;
-  font-size: 13px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: 0.15s;
+}
+
+.control-btn svg {
+  width: 26px;
+  height: 26px;
+  fill: white;
+  transition: 0.2s;
 }
 
 .control-btn.active {
   background: #34c759;
-  color: black;
   border-color: #34c759;
 }
 
+.control-btn.active svg {
+  fill: black;
+}
+
 .control-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.93);
 }
 
 /* TECLADO */
@@ -105,12 +116,6 @@ body {
   background: #111;
   color: white;
   font-size: 20px;
-  cursor: pointer;
-}
-
-.key:active {
-  transform: scale(0.9);
-  background: #222;
 }
 
 /* ENCERRAR */
@@ -175,30 +180,43 @@ button.end {
   <div class="status">Ligação em andamento...</div>
   <div id="timer" class="timer">00:00</div>
 
-  <!-- 🔥 CONTROLES -->
+  <!-- CONTROLES -->
   <div class="controls">
-    <button id="muteBtn" class="control-btn" onclick="toggleMute()">Microfone</button>
-    <button id="speakerBtn" class="control-btn" onclick="toggleSpeaker()">Viva-voz</button>
-    <button class="control-btn" onclick="simular()">Adicionar</button>
+
+    <button id="muteBtn" class="control-btn" onclick="toggleMute()">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a1 1 0 0 0-2 0 3 3 0 0 1-6 0 1 1 0 0 0-2 0 5 5 0 0 0 4 4.9V21h2v-2.1A5 5 0 0 0 17 11z"/>
+      </svg>
+    </button>
+
+    <button id="speakerBtn" class="control-btn" onclick="toggleSpeaker()">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a3.5 3.5 0 0 0-2.5-3.35v6.7A3.5 3.5 0 0 0 16.5 12zm2.5 0a6 6 0 0 1-4 5.65v-2.2a4 4 0 0 0 0-6.9v-2.2A6 6 0 0 1 19 12z"/>
+      </svg>
+    </button>
+
+    <button id="saveBtn" class="control-btn" onclick="salvar()">
+      <svg viewBox="0 0 24 24">
+        <path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14l2-2V5a2 2 0 0 0-2-2zm-5 16a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM6 6h9v4H6z"/>
+      </svg>
+    </button>
+
   </div>
 
-  <!-- TECLADO -->
+  <!-- TECLADO VISUAL -->
   <div class="keypad">
-    <button class="key" onclick="tecla('1')">1</button>
-    <button class="key" onclick="tecla('2')">2</button>
-    <button class="key" onclick="tecla('3')">3</button>
-
-    <button class="key" onclick="tecla('4')">4</button>
-    <button class="key" onclick="tecla('5')">5</button>
-    <button class="key" onclick="tecla('6')">6</button>
-
-    <button class="key" onclick="tecla('7')">7</button>
-    <button class="key" onclick="tecla('8')">8</button>
-    <button class="key" onclick="tecla('9')">9</button>
-
-    <button class="key" onclick="tecla('*')">*</button>
-    <button class="key" onclick="tecla('0')">0</button>
-    <button class="key" onclick="tecla('#')">#</button>
+    <div class="key">1</div>
+    <div class="key">2</div>
+    <div class="key">3</div>
+    <div class="key">4</div>
+    <div class="key">5</div>
+    <div class="key">6</div>
+    <div class="key">7</div>
+    <div class="key">8</div>
+    <div class="key">9</div>
+    <div class="key">*</div>
+    <div class="key">0</div>
+    <div class="key">#</div>
   </div>
 
   <button class="end" onclick="encerrar()">Encerrar</button>
@@ -216,10 +234,6 @@ button.end {
     <source src="queda.mp3" type="audio/mpeg">
   </audio>
 
-  <audio id="keyAudio">
-    <source src="tecla.mp3" type="audio/mpeg">
-  </audio>
-
   <div id="signalLoss" class="signal-loss">
     <div>📡 Falha de Sinal</div>
     <div style="font-size:16px; color:gray; margin-top:10px;">
@@ -233,13 +247,10 @@ button.end {
 let segundos = 0;
 let intervalo;
 let falhaAtivada = false;
-let mutado = false;
-let vivaVoz = false;
 
 const callAudio = document.getElementById("callAudio");
 const noiseAudio = document.getElementById("noiseAudio");
 const dropAudio = document.getElementById("dropAudio");
-const keyAudio = document.getElementById("keyAudio");
 const signalLoss = document.getElementById("signalLoss");
 
 // TIMER
@@ -258,30 +269,24 @@ function iniciarTimer() {
   intervalo = setInterval(atualizarTimer, 1000);
 }
 
-// 🔥 TECLAS
-function tecla(num) {
-  keyAudio.currentTime = 0;
-  keyAudio.play();
-}
-
-// 🔥 MICROFONE
+// BOTÕES
 function toggleMute() {
-  mutado = !mutado;
-
   document.getElementById("muteBtn")
     .classList.toggle("active");
-
-  console.log("Microfone:", mutado ? "Mudo" : "Ativo");
 }
 
-// 🔥 VIVA VOZ
 function toggleSpeaker() {
-  vivaVoz = !vivaVoz;
-
   document.getElementById("speakerBtn")
     .classList.toggle("active");
+}
 
-  console.log("Viva-voz:", vivaVoz ? "Ligado" : "Desligado");
+function salvar() {
+  const btn = document.getElementById("saveBtn");
+  btn.classList.add("active");
+
+  setTimeout(() => {
+    btn.classList.remove("active");
+  }, 700);
 }
 
 // SINAL CAINDO
@@ -308,13 +313,9 @@ function ativarFalha() {
   setTimeout(() => {
       noiseAudio.pause();
       dropAudio.play();
-      encerrarVisual();
+      document.querySelector(".status").innerText = "Ligação perdida ❌";
+      signalLoss.innerHTML = "<div>📡 Sinal Perdido</div>";
   }, 1800);
-}
-
-function encerrarVisual() {
-  signalLoss.innerHTML = "<div>📡 Sinal Perdido</div>";
-  document.querySelector(".status").innerText = "Ligação perdida ❌";
 }
 
 // INICIAR
@@ -346,4 +347,3 @@ function encerrar() {
 
 </body>
 </html>
-
