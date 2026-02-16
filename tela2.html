@@ -28,24 +28,8 @@ body {
   position: relative;
 
   background: radial-gradient(circle at top,
-      #2a2a2a 0%,
-      #000 60%);
-}
-
-/* 🔥 ÁREA ROLÁVEL */
-.content {
-  height: 100%;
-  overflow-y: auto;
-  padding-bottom: 120px; /* espaço pro botão encerrar */
-}
-
-/* 🌫 GLASS */
-.glass {
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(18px);
-  background: rgba(0,0,0,0.35);
-  pointer-events: none;
+      #1f1f1f 0%,
+      #000 65%);
 }
 
 /* 📶 SINAL */
@@ -55,7 +39,6 @@ body {
   right: 22px;
   display: flex;
   gap: 4px;
-  z-index: 2;
 }
 
 .bar {
@@ -78,7 +61,7 @@ body {
   margin: 0 auto 15px;
 
   background: url("avatar.png") center/cover;
-  border: 3px solid rgba(255,255,255,0.15);
+  border: 3px solid rgba(255,255,255,0.12);
 }
 
 h2 {
@@ -112,7 +95,7 @@ h2 {
   height: 58px;
   border-radius: 22px;
   border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.04);
 
   display: flex;
   align-items: center;
@@ -128,7 +111,7 @@ h2 {
 
 /* 🔢 TECLADO */
 .keypad {
-  margin-top: 15px;
+  margin-top: 18px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
@@ -138,7 +121,7 @@ h2 {
 .key {
   height: 65px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
 
   display: flex;
@@ -154,7 +137,7 @@ h2 {
   color: rgba(255,255,255,0.4);
 }
 
-/* 🔴 ENCERRAR FIXO */
+/* 🔴 ENCERRAR */
 .end-call {
   position: absolute;
   bottom: 25px;
@@ -168,22 +151,6 @@ h2 {
   border: none;
   color: white;
   font-size: 14px;
-  z-index: 5;
-}
-
-/* ⚠️ OVERLAY */
-.signal-loss {
-  position: absolute;
-  inset: 0;
-  background: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 22px;
-  opacity: 0;
-  transition: 0.3s;
-  z-index: 10;
 }
 </style>
 </head>
@@ -192,64 +159,56 @@ h2 {
 
 <div class="phone">
 
-  <div class="glass"></div>
-
   <div class="signal">
-    <div class="bar" id="bar1"></div>
-    <div class="bar" id="bar2"></div>
-    <div class="bar" id="bar3"></div>
-    <div class="bar" id="bar4"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
   </div>
 
-  <div class="content">
+  <div class="contact">
+    <div class="avatar"></div>
+    <h2>Origon Investimentos</h2>
+    <div class="status">Ligação em andamento...</div>
+    <div id="timer" class="timer">00:00</div>
+  </div>
 
-    <div class="contact">
-      <div class="avatar"></div>
-      <h2>Origon Investimentos</h2>
-      <div class="status">Ligação em andamento...</div>
-      <div id="timer" class="timer">00:00</div>
+  <div class="controls">
+    <div class="control-btn">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/>
+      </svg>
     </div>
 
-    <div class="controls">
-
-      <div class="control-btn">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/>
-        </svg>
-      </div>
-
-      <div class="control-btn">
-        <svg viewBox="0 0 24 24">
-          <path d="M3 10v4h4l5 5V5L7 10H3z"/>
-        </svg>
-      </div>
-
-      <div class="control-btn">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </div>
-
+    <div class="control-btn">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 10v4h4l5 5V5L7 10H3z"/>
+      </svg>
     </div>
 
-    <div class="keypad">
-      <div class="key">1</div>
-      <div class="key">2 <span>ABC</span></div>
-      <div class="key">3 <span>DEF</span></div>
-
-      <div class="key">4 <span>GHI</span></div>
-      <div class="key">5 <span>JKL</span></div>
-      <div class="key">6 <span>MNO</span></div>
-
-      <div class="key">7 <span>PQRS</span></div>
-      <div class="key">8 <span>TUV</span></div>
-      <div class="key">9 <span>WXYZ</span></div>
-
-      <div class="key">*</div>
-      <div class="key">0</div>
-      <div class="key">#</div>
+    <div class="control-btn">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
+      </svg>
     </div>
+  </div>
 
+  <div class="keypad">
+    <div class="key">1</div>
+    <div class="key">2 <span>ABC</span></div>
+    <div class="key">3 <span>DEF</span></div>
+
+    <div class="key">4 <span>GHI</span></div>
+    <div class="key">5 <span>JKL</span></div>
+    <div class="key">6 <span>MNO</span></div>
+
+    <div class="key">7 <span>PQRS</span></div>
+    <div class="key">8 <span>TUV</span></div>
+    <div class="key">9 <span>WXYZ</span></div>
+
+    <div class="key">*</div>
+    <div class="key">0</div>
+    <div class="key">#</div>
   </div>
 
   <button class="end-call">Encerrar</button>
@@ -258,13 +217,22 @@ h2 {
     <source src="ligacao.mp3" type="audio/mpeg">
   </audio>
 
-  <div id="signalLoss" class="signal-loss">
-    <div>📡 Falha de Sinal</div>
-  </div>
-
 </div>
 
 <script>
+const audio = document.getElementById("callAudio");
+
+/* ✅ Tentativa automática */
+audio.play().catch(() => {
+  console.log("Autoplay bloqueado — aguardando interação");
+});
+
+/* ✅ Fallback seguro */
+document.addEventListener("click", () => {
+  audio.play();
+}, { once: true });
+
+/* ⏱ TIMER */
 let segundos = 0;
 
 setInterval(() => {
