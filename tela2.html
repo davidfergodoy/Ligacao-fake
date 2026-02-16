@@ -24,12 +24,15 @@ body {
   height: 85vh;
   max-height: 640px;
   border-radius: 40px;
-  overflow: hidden;
   position: relative;
 
   background: radial-gradient(circle at top,
       #1f1f1f 0%,
       #000 65%);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* 📶 SINAL */
@@ -46,6 +49,7 @@ body {
   height: 18px;
   background: #34c759;
   border-radius: 3px;
+  transition: 0.2s;
 }
 
 /* 👤 CONTATO */
@@ -59,7 +63,6 @@ body {
   height: 90px;
   border-radius: 50%;
   margin: 0 auto 15px;
-
   background: url("avatar.png") center/cover;
   border: 3px solid rgba(255,255,255,0.12);
 }
@@ -67,7 +70,6 @@ body {
 h2 {
   margin: 0;
   font-size: 22px;
-  font-weight: 500;
 }
 
 .status {
@@ -79,7 +81,6 @@ h2 {
 .timer {
   font-size: 32px;
   margin-top: 10px;
-  font-weight: 300;
 }
 
 /* 🎛 CONTROLES */
@@ -96,7 +97,6 @@ h2 {
   border-radius: 22px;
   border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.04);
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,7 +106,6 @@ h2 {
   width: 26px;
   height: 26px;
   fill: white;
-  stroke: white;
 }
 
 /* 🔢 TECLADO */
@@ -123,119 +122,153 @@ h2 {
   border-radius: 50%;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
-
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-
   font-size: 22px;
 }
 
-.key span {
-  font-size: 10px;
-  color: rgba(255,255,255,0.4);
+/* 🔴 ENCERRAR */
+.end-container {
+  margin-top: auto;
+  padding: 25px;
+  text-align: center;
 }
 
-/* 🔴 ENCERRAR */
 .end-call {
-  position: absolute;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-
   width: 72px;
   height: 72px;
   border-radius: 50%;
   background: #ff3b30;
   border: none;
   color: white;
-  font-size: 14px;
+}
+
+/* ⚠️ OVERLAY */
+.signal-loss {
+  position: absolute;
+  inset: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 22px;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+/* 😈 TREMOR */
+.shake {
+  animation: shake 0.08s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px); }
+  50% { transform: translate(-1px, -1px); }
+  100% { transform: translate(1px, -1px); }
+}
+
+/* 😈 GLITCH */
+.glitch {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(255,0,0,0.08),
+    rgba(0,255,255,0.08)
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  animation: glitch 0.15s infinite;
+}
+
+@keyframes glitch {
+  0% { opacity: 0.1; transform: translateX(-2px); }
+  50% { opacity: 0.2; transform: translateX(2px); }
+  100% { opacity: 0.1; transform: translateX(-1px); }
 }
 </style>
 </head>
 
 <body>
 
-<div class="phone">
+<div id="phone" class="phone">
 
   <div class="signal">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
+    <div class="bar" id="bar1"></div>
+    <div class="bar" id="bar2"></div>
+    <div class="bar" id="bar3"></div>
+    <div class="bar" id="bar4"></div>
   </div>
 
   <div class="contact">
     <div class="avatar"></div>
     <h2>Origon Investimentos</h2>
-    <div class="status">Ligação em andamento...</div>
+    <div id="status" class="status">Ligação em andamento...</div>
     <div id="timer" class="timer">00:00</div>
   </div>
 
   <div class="controls">
-    <div class="control-btn">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/>
-      </svg>
-    </div>
-
-    <div class="control-btn">
-      <svg viewBox="0 0 24 24">
-        <path d="M3 10v4h4l5 5V5L7 10H3z"/>
-      </svg>
-    </div>
-
-    <div class="control-btn">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </div>
+    <div class="control-btn">🎤</div>
+    <div class="control-btn">🔊</div>
+    <div class="control-btn">➕</div>
   </div>
 
   <div class="keypad">
     <div class="key">1</div>
-    <div class="key">2 <span>ABC</span></div>
-    <div class="key">3 <span>DEF</span></div>
-
-    <div class="key">4 <span>GHI</span></div>
-    <div class="key">5 <span>JKL</span></div>
-    <div class="key">6 <span>MNO</span></div>
-
-    <div class="key">7 <span>PQRS</span></div>
-    <div class="key">8 <span>TUV</span></div>
-    <div class="key">9 <span>WXYZ</span></div>
-
+    <div class="key">2</div>
+    <div class="key">3</div>
+    <div class="key">4</div>
+    <div class="key">5</div>
+    <div class="key">6</div>
+    <div class="key">7</div>
+    <div class="key">8</div>
+    <div class="key">9</div>
     <div class="key">*</div>
     <div class="key">0</div>
     <div class="key">#</div>
   </div>
 
-  <button class="end-call">Encerrar</button>
+  <div class="end-container">
+    <button class="end-call" onclick="encerrar()">Encerrar</button>
+  </div>
 
+  <!-- 🔊 ÁUDIOS -->
   <audio id="callAudio">
     <source src="ligacao.mp3" type="audio/mpeg">
   </audio>
 
+  <audio id="interferencia">
+    <source src="interferencia.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="queda">
+    <source src="queda.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="signalLoss" class="signal-loss">
+    <div>📡 Falha de Sinal</div>
+  </div>
+
+  <div id="glitch" class="glitch"></div>
+
 </div>
 
 <script>
-const audio = document.getElementById("callAudio");
+const callAudio = document.getElementById("callAudio");
+const interferencia = document.getElementById("interferencia");
+const queda = document.getElementById("queda");
+const phone = document.getElementById("phone");
+const glitch = document.getElementById("glitch");
 
-/* ✅ Tentativa automática */
-audio.play().catch(() => {
-  console.log("Autoplay bloqueado — aguardando interação");
-});
-
-/* ✅ Fallback seguro */
-document.addEventListener("click", () => {
-  audio.play();
-}, { once: true });
+callAudio.play().catch(()=>{});
+document.addEventListener("click", () => callAudio.play(), { once:true });
 
 /* ⏱ TIMER */
 let segundos = 0;
 
-setInterval(() => {
+const timer = setInterval(() => {
   segundos++;
   const minutos = Math.floor(segundos / 60);
   const secs = segundos % 60;
@@ -244,6 +277,49 @@ setInterval(() => {
     String(minutos).padStart(2, '0') + ":" +
     String(secs).padStart(2, '0');
 }, 1000);
+
+/* 😈 INTERFERÊNCIA DRAMÁTICA */
+callAudio.addEventListener("timeupdate", () => {
+
+  if (callAudio.duration - callAudio.currentTime < 3.5) {
+
+    interferencia.play();
+    document.getElementById("status").innerText = "Interferência detectada...";
+
+    glitch.style.opacity = "1";
+    phone.classList.add("shake");
+
+    document.getElementById("bar3").style.opacity = "0.2";
+    document.getElementById("bar4").style.opacity = "0.05";
+
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+  }
+});
+
+/* 😈 QUEDA CINEMÁTICA */
+callAudio.addEventListener("ended", () => {
+
+  glitch.style.opacity = "0";
+  phone.classList.remove("shake");
+
+  document.getElementById("signalLoss").style.opacity = "1";
+  queda.play();
+
+  clearInterval(timer);
+
+  if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
+});
+
+function encerrar() {
+  callAudio.pause();
+  glitch.style.opacity = "0";
+  phone.classList.remove("shake");
+
+  document.getElementById("signalLoss").style.opacity = "1";
+  queda.play();
+
+  clearInterval(timer);
+}
 </script>
 
 </body>
