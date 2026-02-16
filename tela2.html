@@ -26,12 +26,13 @@ body {
   border-radius: 35px;
   background: black;
   text-align: center;
-  padding-top: 110px;
+  padding-top: 80px;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
 }
 
+/* SINAL */
 .signal {
   position: absolute;
   top: 25px;
@@ -50,26 +51,82 @@ body {
 
 .status {
   color: gray;
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 15px;
+  margin-bottom: 5px;
 }
 
 .timer {
-  font-size: 32px;
-  margin-bottom: 60px;
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
-button {
-  width: 80px;
-  height: 80px;
+/* BOTÕES SUPERIORES 🔥 */
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 0 20px;
+  margin-bottom: 15px;
+}
+
+.control-btn {
+  height: 55px;
+  border-radius: 18px;
+  border: 1px solid #333;
+  background: #111;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.control-btn.active {
+  background: #34c759;
+  color: black;
+  border-color: #34c759;
+}
+
+.control-btn:active {
+  transform: scale(0.95);
+}
+
+/* TECLADO */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 0 25px;
+}
+
+.key {
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  background: #111;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.key:active {
+  transform: scale(0.9);
+  background: #222;
+}
+
+/* ENCERRAR */
+button.end {
+  margin-top: 15px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   border: none;
   background: #ff3b30;
   color: white;
-  font-size: 16px;
+  font-size: 13px;
   cursor: pointer;
 }
 
+/* OVERLAY */
 .signal-loss {
   position: absolute;
   inset: 0;
@@ -83,6 +140,7 @@ button {
   transition: 0.2s;
 }
 
+/* EFEITOS */
 .glitch { animation: glitch 0.09s infinite; }
 .shake { animation: shake 0.12s infinite; }
 
@@ -117,7 +175,33 @@ button {
   <div class="status">Ligação em andamento...</div>
   <div id="timer" class="timer">00:00</div>
 
-  <button onclick="encerrar()">Encerrar</button>
+  <!-- 🔥 CONTROLES -->
+  <div class="controls">
+    <button id="muteBtn" class="control-btn" onclick="toggleMute()">Microfone</button>
+    <button id="speakerBtn" class="control-btn" onclick="toggleSpeaker()">Viva-voz</button>
+    <button class="control-btn" onclick="simular()">Adicionar</button>
+  </div>
+
+  <!-- TECLADO -->
+  <div class="keypad">
+    <button class="key" onclick="tecla('1')">1</button>
+    <button class="key" onclick="tecla('2')">2</button>
+    <button class="key" onclick="tecla('3')">3</button>
+
+    <button class="key" onclick="tecla('4')">4</button>
+    <button class="key" onclick="tecla('5')">5</button>
+    <button class="key" onclick="tecla('6')">6</button>
+
+    <button class="key" onclick="tecla('7')">7</button>
+    <button class="key" onclick="tecla('8')">8</button>
+    <button class="key" onclick="tecla('9')">9</button>
+
+    <button class="key" onclick="tecla('*')">*</button>
+    <button class="key" onclick="tecla('0')">0</button>
+    <button class="key" onclick="tecla('#')">#</button>
+  </div>
+
+  <button class="end" onclick="encerrar()">Encerrar</button>
 
   <!-- ÁUDIOS -->
   <audio id="callAudio">
@@ -130,6 +214,10 @@ button {
 
   <audio id="dropAudio">
     <source src="queda.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="keyAudio">
+    <source src="tecla.mp3" type="audio/mpeg">
   </audio>
 
   <div id="signalLoss" class="signal-loss">
@@ -145,10 +233,13 @@ button {
 let segundos = 0;
 let intervalo;
 let falhaAtivada = false;
+let mutado = false;
+let vivaVoz = false;
 
 const callAudio = document.getElementById("callAudio");
 const noiseAudio = document.getElementById("noiseAudio");
 const dropAudio = document.getElementById("dropAudio");
+const keyAudio = document.getElementById("keyAudio");
 const signalLoss = document.getElementById("signalLoss");
 
 // TIMER
@@ -167,6 +258,32 @@ function iniciarTimer() {
   intervalo = setInterval(atualizarTimer, 1000);
 }
 
+// 🔥 TECLAS
+function tecla(num) {
+  keyAudio.currentTime = 0;
+  keyAudio.play();
+}
+
+// 🔥 MICROFONE
+function toggleMute() {
+  mutado = !mutado;
+
+  document.getElementById("muteBtn")
+    .classList.toggle("active");
+
+  console.log("Microfone:", mutado ? "Mudo" : "Ativo");
+}
+
+// 🔥 VIVA VOZ
+function toggleSpeaker() {
+  vivaVoz = !vivaVoz;
+
+  document.getElementById("speakerBtn")
+    .classList.toggle("active");
+
+  console.log("Viva-voz:", vivaVoz ? "Ligado" : "Desligado");
+}
+
 // SINAL CAINDO
 function derrubarSinal() {
   bar4.style.opacity = 0;
@@ -175,7 +292,7 @@ function derrubarSinal() {
   setTimeout(() => bar1.style.opacity = 0, 750);
 }
 
-// FALHA REALISTA
+// FALHA
 function ativarFalha() {
   falhaAtivada = true;
 
@@ -188,15 +305,13 @@ function ativarFalha() {
   noiseAudio.play();
   derrubarSinal();
 
-  // 🔥 Sequência cinematográfica
   setTimeout(() => {
-      noiseAudio.pause();      // Interferência PARA
-      dropAudio.play();        // Som de queda TOCA
+      noiseAudio.pause();
+      dropAudio.play();
       encerrarVisual();
   }, 1800);
 }
 
-// VISUAL FINAL
 function encerrarVisual() {
   signalLoss.innerHTML = "<div>📡 Sinal Perdido</div>";
   document.querySelector(".status").innerText = "Ligação perdida ❌";
@@ -205,7 +320,6 @@ function encerrarVisual() {
 // INICIAR
 window.onload = () => {
   iniciarTimer();
-
   callAudio.play().catch(() => {});
 
   document.body.addEventListener("click", () => {
@@ -222,7 +336,7 @@ window.onload = () => {
   };
 };
 
-// ENCERRAR MANUAL
+// ENCERRAR
 function encerrar() {
   clearInterval(intervalo);
   callAudio.pause();
