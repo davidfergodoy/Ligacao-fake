@@ -85,6 +85,7 @@ body {
   width: 26px;
   height: 26px;
   fill: white;
+  stroke: white;
   transition: 0.2s;
 }
 
@@ -97,6 +98,10 @@ body {
   fill: black;
 }
 
+.control-btn.active svg path {
+  stroke: black;
+}
+
 .control-btn:active {
   transform: scale(0.93);
 }
@@ -105,22 +110,34 @@ body {
 .keypad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 12px;
   padding: 0 25px;
 }
 
 .key {
-  height: 60px;
+  height: 65px;
   border-radius: 50%;
   border: 1px solid #333;
   background: #111;
-  color: white;
-  font-size: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+}
+
+.key span {
+  font-size: 10px;
+  color: gray;
+  margin-top: 2px;
+  letter-spacing: 1px;
 }
 
 /* ENCERRAR */
 button.end {
-  margin-top: 15px;
+  margin-top: 18px;
   width: 70px;
   height: 70px;
   border-radius: 50%;
@@ -191,29 +208,32 @@ button.end {
 
     <button id="speakerBtn" class="control-btn" onclick="toggleSpeaker()">
       <svg viewBox="0 0 24 24">
-        <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a3.5 3.5 0 0 0-2.5-3.35v6.7A3.5 3.5 0 0 0 16.5 12zm2.5 0a6 6 0 0 1-4 5.65v-2.2a4 4 0 0 0 0-6.9v-2.2A6 6 0 0 1 19 12z"/>
+        <path d="M3 10v4h4l5 5V5L7 10H3z"/>
       </svg>
     </button>
 
     <button id="saveBtn" class="control-btn" onclick="salvar()">
       <svg viewBox="0 0 24 24">
-        <path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14l2-2V5a2 2 0 0 0-2-2zm-5 16a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM6 6h9v4H6z"/>
+        <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </button>
 
   </div>
 
-  <!-- TECLADO VISUAL -->
+  <!-- TECLADO REALISTA -->
   <div class="keypad">
     <div class="key">1</div>
-    <div class="key">2</div>
-    <div class="key">3</div>
-    <div class="key">4</div>
-    <div class="key">5</div>
-    <div class="key">6</div>
-    <div class="key">7</div>
-    <div class="key">8</div>
-    <div class="key">9</div>
+    <div class="key">2 <span>ABC</span></div>
+    <div class="key">3 <span>DEF</span></div>
+
+    <div class="key">4 <span>GHI</span></div>
+    <div class="key">5 <span>JKL</span></div>
+    <div class="key">6 <span>MNO</span></div>
+
+    <div class="key">7 <span>PQRS</span></div>
+    <div class="key">8 <span>TUV</span></div>
+    <div class="key">9 <span>WXYZ</span></div>
+
     <div class="key">*</div>
     <div class="key">0</div>
     <div class="key">#</div>
@@ -253,10 +273,8 @@ const noiseAudio = document.getElementById("noiseAudio");
 const dropAudio = document.getElementById("dropAudio");
 const signalLoss = document.getElementById("signalLoss");
 
-// TIMER
 function atualizarTimer() {
   segundos++;
-
   const minutos = Math.floor(segundos / 60);
   const secs = segundos % 60;
 
@@ -269,7 +287,6 @@ function iniciarTimer() {
   intervalo = setInterval(atualizarTimer, 1000);
 }
 
-// BOTÕES
 function toggleMute() {
   document.getElementById("muteBtn")
     .classList.toggle("active");
@@ -289,7 +306,6 @@ function salvar() {
   }, 700);
 }
 
-// SINAL CAINDO
 function derrubarSinal() {
   bar4.style.opacity = 0;
   setTimeout(() => bar3.style.opacity = 0, 250);
@@ -297,7 +313,6 @@ function derrubarSinal() {
   setTimeout(() => bar1.style.opacity = 0, 750);
 }
 
-// FALHA
 function ativarFalha() {
   falhaAtivada = true;
 
@@ -318,7 +333,6 @@ function ativarFalha() {
   }, 1800);
 }
 
-// INICIAR
 window.onload = () => {
   iniciarTimer();
   callAudio.play().catch(() => {});
@@ -337,7 +351,6 @@ window.onload = () => {
   };
 };
 
-// ENCERRAR
 function encerrar() {
   clearInterval(intervalo);
   callAudio.pause();
