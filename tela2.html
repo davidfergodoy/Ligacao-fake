@@ -32,7 +32,6 @@ body {
   overflow: hidden;
 }
 
-/* SINAL */
 .signal {
   position: absolute;
   top: 25px;
@@ -46,11 +45,8 @@ body {
   height: 18px;
   background: #34c759;
   border-radius: 3px;
-  opacity: 1;
   transition: 0.3s;
 }
-
-h2 { font-size: 24px; margin-bottom: 10px; }
 
 .status {
   color: gray;
@@ -74,7 +70,6 @@ button {
   cursor: pointer;
 }
 
-/* OVERLAY */
 .signal-loss {
   position: absolute;
   inset: 0;
@@ -88,10 +83,8 @@ button {
   transition: 0.2s;
 }
 
-/* GLITCH */
-.glitch {
-  animation: glitch 0.09s infinite;
-}
+.glitch { animation: glitch 0.09s infinite; }
+.shake { animation: shake 0.12s infinite; }
 
 @keyframes glitch {
   0% { transform: translate(3px, -3px); }
@@ -99,11 +92,6 @@ button {
   50% { transform: translate(2px, -2px); }
   75% { transform: translate(-2px, 2px); }
   100% { transform: translate(0, 0); }
-}
-
-/* TREMER TELA */
-.shake {
-  animation: shake 0.12s infinite;
 }
 
 @keyframes shake {
@@ -118,7 +106,6 @@ button {
 
 <div class="phone">
 
-  <!-- BARRAS DE SINAL -->
   <div class="signal">
     <div class="bar" id="bar1"></div>
     <div class="bar" id="bar2"></div>
@@ -137,15 +124,14 @@ button {
     <source src="ligacao.mp3" type="audio/mpeg">
   </audio>
 
-  <audio id="bgAudio" loop>
-    <source src="call_background.mp3" type="audio/mpeg">
-  </audio>
-
   <audio id="noiseAudio" loop>
     <source src="interferencia.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- OVERLAY -->
+  <audio id="dropAudio">
+    <source src="queda.mp3" type="audio/mpeg">
+  </audio>
+
   <div id="signalLoss" class="signal-loss">
     <div>📡 Falha de Sinal</div>
     <div style="font-size:16px; color:gray; margin-top:10px;">
@@ -161,8 +147,8 @@ let intervalo;
 let falhaAtivada = false;
 
 const callAudio = document.getElementById("callAudio");
-const bgAudio = document.getElementById("bgAudio");
 const noiseAudio = document.getElementById("noiseAudio");
+const dropAudio = document.getElementById("dropAudio");
 const signalLoss = document.getElementById("signalLoss");
 
 // TIMER
@@ -183,22 +169,13 @@ function iniciarTimer() {
 
 // SINAL CAINDO
 function derrubarSinal() {
-  document.getElementById("bar4").style.opacity = 0;
-
-  setTimeout(() => {
-    document.getElementById("bar3").style.opacity = 0;
-  }, 300);
-
-  setTimeout(() => {
-    document.getElementById("bar2").style.opacity = 0;
-  }, 600);
-
-  setTimeout(() => {
-    document.getElementById("bar1").style.opacity = 0;
-  }, 900);
+  bar4.style.opacity = 0;
+  setTimeout(() => bar3.style.opacity = 0, 250);
+  setTimeout(() => bar2.style.opacity = 0, 500);
+  setTimeout(() => bar1.style.opacity = 0, 750);
 }
 
-// FALHA CINEMATOGRÁFICA
+// FALHA REALISTA
 function ativarFalha() {
   falhaAtivada = true;
 
@@ -209,13 +186,20 @@ function ativarFalha() {
   document.querySelector(".phone").classList.add("shake");
 
   noiseAudio.play();
-
   derrubarSinal();
 
-  // Queda brutal
+  // 🔥 Sequência cinematográfica
   setTimeout(() => {
-    encerrarForcado();
-  }, 2500);
+      noiseAudio.pause();      // Interferência PARA
+      dropAudio.play();        // Som de queda TOCA
+      encerrarVisual();
+  }, 1800);
+}
+
+// VISUAL FINAL
+function encerrarVisual() {
+  signalLoss.innerHTML = "<div>📡 Sinal Perdido</div>";
+  document.querySelector(".status").innerText = "Ligação perdida ❌";
 }
 
 // INICIAR
@@ -223,14 +207,11 @@ window.onload = () => {
   iniciarTimer();
 
   callAudio.play().catch(() => {});
-  bgAudio.play().catch(() => {});
 
   document.body.addEventListener("click", () => {
     callAudio.play();
-    bgAudio.play();
   }, { once: true });
 
-  // SINCRONIZAÇÃO PERFEITA
   callAudio.ontimeupdate = () => {
     if(callAudio.duration &&
        callAudio.currentTime >= callAudio.duration - 1.2 &&
@@ -241,26 +222,11 @@ window.onload = () => {
   };
 };
 
-// ENCERRAR NORMAL
+// ENCERRAR MANUAL
 function encerrar() {
   clearInterval(intervalo);
   callAudio.pause();
-  bgAudio.pause();
   noiseAudio.pause();
-
-  document.querySelector(".status").innerText = "Ligação encerrada";
-}
-
-// QUEDA FORÇADA
-function encerrarForcado() {
-  clearInterval(intervalo);
-
-  callAudio.pause();
-  bgAudio.pause();
-  noiseAudio.pause();
-
-  signalLoss.innerHTML = "<div>📡 Sinal Perdido</div>";
-  document.querySelector(".status").innerText = "Ligação perdida ❌";
 }
 </script>
 
