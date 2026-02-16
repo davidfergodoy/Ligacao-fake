@@ -3,77 +3,155 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ligação Atendida</title>
+<title>Ligação em andamento</title>
+
 <style>
 body {
   background: black;
-  color: white;
+  margin: 0;
   font-family: Arial, sans-serif;
-  display: flex; flex-direction: column;
-  justify-content: center; align-items: center;
-  height: 100vh; margin: 0; text-align: center;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
-h2 { font-size: 28px; margin-bottom: 20px; }
-p { font-size: 18px; color: #ccc; margin-bottom: 30px; }
+
+.phone {
+  width: 90vw;
+  max-width: 320px;
+  height: 85vh;
+  max-height: 640px;
+  border: 2px solid #222;
+  border-radius: 35px;
+  background: black;
+  text-align: center;
+  padding-top: 120px;
+  box-sizing: border-box;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.status {
+  color: gray;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.timer {
+  font-size: 32px;
+  margin-bottom: 60px;
+}
+
 button {
-  padding: 15px 25px; font-size: 18px;
-  border-radius: 12px; border: none;
-  background: #34c759; color: white; cursor: pointer;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  background: #ff3b30;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
 }
-button:active { transform: scale(0.95); }
+
+button:active {
+  transform: scale(0.9);
+}
 </style>
 </head>
+
 <body>
 
-<h2>Ligação com Origon Investimentos</h2>
-<p id="mensagem">Conectando...</p>
-<button id="responderBtn">Responder</button>
+<div class="phone">
 
-<audio id="bgAudio" loop>
-  <source src="call_background.mp3" type="audio/mpeg">
-</audio>
+  <h2>Origon Investimentos</h2>
+  <div class="status">Ligação em andamento...</div>
+
+  <div id="timer" class="timer">00:00</div>
+
+  <button onclick="encerrar()">Encerrar</button>
+
+  <!-- ÁUDIO DA LIGAÇÃO -->
+  <audio id="callAudio">
+    <source src="ligacao.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- SOM DE FUNDO OPCIONAL -->
+  <audio id="bgAudio" loop>
+    <source src="call_background.mp3" type="audio/mpeg">
+  </audio>
+
+</div>
 
 <script>
-const bgAudio = document.getElementById("bgAudio");
-const mensagemEl = document.getElementById("mensagem");
-const btn = document.getElementById("responderBtn");
+let segundos = 0;
+let intervalo;
 
-const conversa = [
-  "Olá! Aqui é da Origon Investimentos.",
-  "Estamos entrando em contato para apresentar uma oportunidade incrível.",
-  "Gostaria de ouvir mais detalhes agora?",
-  "Perfeito! Então vamos começar com os pontos principais."
-];
+// Contador
+function atualizarTimer() {
+  segundos++;
 
-let passo = 0;
+  const minutos = Math.floor(segundos / 60);
+  const secs = segundos % 60;
 
-function falar(texto) {
-  const utterance = new SpeechSynthesisUtterance(texto);
-  utterance.lang = "pt-BR"; utterance.rate = 1; utterance.pitch = 1;
-  speechSynthesis.speak(utterance);
-  mensagemEl.innerText = texto;
+  const formatado =
+    String(minutos).padStart(2, '0') + ":" +
+    String(secs).padStart(2, '0');
+
+  document.getElementById("timer").innerText = formatado;
 }
 
-function iniciarLigacao() {
-  bgAudio.play().catch(() => console.log("Autoplay bloqueado."));
-  falar(conversa[passo]);
-  btn.style.display = "inline-block";
+function iniciarTimer() {
+  intervalo = setInterval(atualizarTimer, 1000);
 }
 
-btn.addEventListener("click", () => {
-  passo++;
-  if(passo < conversa.length) {
-    falar(conversa[passo]);
-  } else {
-    mensagemEl.innerText = "Fim da ligação. Obrigado!";
-    btn.style.display = "none";
+// Iniciar ligação
+window.onload = () => {
+  iniciarTimer();
+
+  const callAudio = document.getElementById("callAudio");
+  const bgAudio = document.getElementById("bgAudio");
+
+  // Tocar áudio principal
+  callAudio.play().catch(() => {
+    console.log("Autoplay bloqueado — aguardando toque.");
+  });
+
+  // Tocar som de fundo (se existir)
+  bgAudio.play().catch(() => {});
+
+  // Caso navegador bloqueie autoplay
+  document.body.addEventListener("click", () => {
+    callAudio.play();
+    bgAudio.play();
+  }, { once: true });
+
+  // Quando o áudio terminar
+  callAudio.onended = () => {
+    document.querySelector(".status").innerText = "Ligação finalizada";
+    clearInterval(intervalo);
     bgAudio.pause();
-  }
-});
+  };
+};
 
-iniciarLigacao();
+// Encerrar ligação manualmente
+function encerrar() {
+  clearInterval(intervalo);
+
+  const callAudio = document.getElementById("callAudio");
+  const bgAudio = document.getElementById("bgAudio");
+
+  callAudio.pause();
+  bgAudio.pause();
+
+  document.querySelector(".status").innerText = "Ligação encerrada";
+}
 </script>
 
 </body>
 </html>
+
 
