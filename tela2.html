@@ -59,15 +59,20 @@ body {
   margin-top: 70px;
   z-index: 2;
   position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .avatar {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  margin: 0 auto 15px;
+  margin-bottom: 15px;
 
-  background: url("avatar.png") center/cover;  /* ✅ PNG */
+  background: url("avatar.png") center/cover;
   border: 3px solid rgba(255,255,255,0.15);
 }
 
@@ -355,11 +360,38 @@ function ativarFalha() {
   derrubarSinal();
 
   setTimeout(() => {
+
       noiseAudio.pause();
       dropAudio.play();
-      document.querySelector(".status").innerText = "Ligação perdida ❌";
-      signalLoss.innerHTML = "<div>📡 Sinal Perdido</div>";
+
+      document.querySelector(".status").innerText = "Reconectando...";
+
+      setTimeout(resetTela, 1500);
+
   }, 1800);
+}
+
+function resetTela() {
+
+  clearInterval(intervalo);
+  callAudio.pause();
+
+  segundos = 0;
+  document.getElementById("timer").innerText = "00:00";
+
+  bar1.style.opacity = 1;
+  bar2.style.opacity = 1;
+  bar3.style.opacity = 1;
+  bar4.style.opacity = 1;
+
+  document.querySelector(".phone").classList.remove("glitch");
+  document.querySelector(".phone").classList.remove("shake");
+
+  signalLoss.style.opacity = 0;
+
+  document.querySelector(".status").innerText = "Chamada encerrada";
+
+  falhaAtivada = false;
 }
 
 window.onload = () => {
