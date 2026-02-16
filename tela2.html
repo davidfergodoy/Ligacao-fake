@@ -19,11 +19,11 @@ body {
 
 /* 📱 CELULAR */
 .phone {
-  width: 90vw;
+  width: 92vw;
   max-width: 320px;
-  height: 85vh;
+  height: 88vh;
   max-height: 640px;
-  border-radius: 40px;
+  border-radius: 38px;
   position: relative;
 
   background: radial-gradient(circle at top,
@@ -38,110 +38,108 @@ body {
 /* 📶 SINAL */
 .signal {
   position: absolute;
-  top: 22px;
-  right: 22px;
+  top: 18px;
+  right: 18px;
   display: flex;
   gap: 4px;
 }
 
 .bar {
-  width: 6px;
-  height: 18px;
+  width: 5px;
+  height: 16px;
   background: #34c759;
   border-radius: 3px;
-  transition: 0.2s;
 }
 
 /* 👤 CONTATO */
 .contact {
-  padding-top: 70px;
+  padding-top: 55px;
   text-align: center;
 }
 
 .avatar {
-  width: 90px;
-  height: 90px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
-  margin: 0 auto 15px;
+  margin: 0 auto 10px;
   background: url("avatar.png") center/cover;
   border: 3px solid rgba(255,255,255,0.12);
 }
 
 h2 {
   margin: 0;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .status {
   color: rgba(255,255,255,0.6);
-  margin-top: 5px;
-  font-size: 14px;
+  margin-top: 3px;
+  font-size: 13px;
 }
 
 .timer {
-  font-size: 32px;
-  margin-top: 10px;
+  font-size: 28px;
+  margin-top: 6px;
 }
 
 /* 🎛 CONTROLES */
 .controls {
-  margin-top: 20px;
+  margin-top: 14px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  padding: 0 25px;
+  gap: 10px;
+  padding: 0 22px;
 }
 
 .control-btn {
-  height: 58px;
-  border-radius: 22px;
+  height: 48px;
+  border-radius: 18px;
   border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.04);
+
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.control-btn svg {
-  width: 26px;
-  height: 26px;
-  fill: white;
+  font-size: 20px;
 }
 
 /* 🔢 TECLADO */
 .keypad {
-  margin-top: 18px;
+  margin-top: 14px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  padding: 0 30px;
+  gap: 10px;
+  padding: 0 24px;
 }
 
 .key {
-  height: 65px;
+  height: 54px;
   border-radius: 50%;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+
+  font-size: 20px;
 }
 
-/* 🔴 ENCERRAR */
+/* 🔴 ENCERRAR (SEMPRE VISÍVEL 😈🔥) */
 .end-container {
   margin-top: auto;
-  padding: 25px;
+  padding: 18px;
   text-align: center;
 }
 
 .end-call {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: #ff3b30;
   border: none;
   color: white;
+  font-size: 13px;
 }
 
 /* ⚠️ OVERLAY */
@@ -157,49 +155,18 @@ h2 {
   opacity: 0;
   transition: 0.4s;
 }
-
-/* 😈 TREMOR */
-.shake {
-  animation: shake 0.08s infinite;
-}
-
-@keyframes shake {
-  0% { transform: translate(1px, 1px); }
-  50% { transform: translate(-1px, -1px); }
-  100% { transform: translate(1px, -1px); }
-}
-
-/* 😈 GLITCH */
-.glitch {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    rgba(255,0,0,0.08),
-    rgba(0,255,255,0.08)
-  );
-  mix-blend-mode: screen;
-  opacity: 0;
-  pointer-events: none;
-  animation: glitch 0.15s infinite;
-}
-
-@keyframes glitch {
-  0% { opacity: 0.1; transform: translateX(-2px); }
-  50% { opacity: 0.2; transform: translateX(2px); }
-  100% { opacity: 0.1; transform: translateX(-1px); }
-}
 </style>
 </head>
 
 <body>
 
-<div id="phone" class="phone">
+<div class="phone">
 
   <div class="signal">
-    <div class="bar" id="bar1"></div>
-    <div class="bar" id="bar2"></div>
-    <div class="bar" id="bar3"></div>
-    <div class="bar" id="bar4"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
   </div>
 
   <div class="contact">
@@ -251,16 +218,12 @@ h2 {
     <div>📡 Falha de Sinal</div>
   </div>
 
-  <div id="glitch" class="glitch"></div>
-
 </div>
 
 <script>
 const callAudio = document.getElementById("callAudio");
 const interferencia = document.getElementById("interferencia");
 const queda = document.getElementById("queda");
-const phone = document.getElementById("phone");
-const glitch = document.getElementById("glitch");
 
 callAudio.play().catch(()=>{});
 document.addEventListener("click", () => callAudio.play(), { once:true });
@@ -278,46 +241,25 @@ const timer = setInterval(() => {
     String(secs).padStart(2, '0');
 }, 1000);
 
-/* 😈 INTERFERÊNCIA DRAMÁTICA */
+/* 😈 INTERFERÊNCIA */
 callAudio.addEventListener("timeupdate", () => {
-
   if (callAudio.duration - callAudio.currentTime < 3.5) {
-
     interferencia.play();
     document.getElementById("status").innerText = "Interferência detectada...";
-
-    glitch.style.opacity = "1";
-    phone.classList.add("shake");
-
-    document.getElementById("bar3").style.opacity = "0.2";
-    document.getElementById("bar4").style.opacity = "0.05";
-
-    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
   }
 });
 
-/* 😈 QUEDA CINEMÁTICA */
+/* 😈 QUEDA */
 callAudio.addEventListener("ended", () => {
-
-  glitch.style.opacity = "0";
-  phone.classList.remove("shake");
-
   document.getElementById("signalLoss").style.opacity = "1";
   queda.play();
-
   clearInterval(timer);
-
-  if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
 });
 
 function encerrar() {
   callAudio.pause();
-  glitch.style.opacity = "0";
-  phone.classList.remove("shake");
-
-  document.getElementById("signalLoss").style.opacity = "1";
   queda.play();
-
+  document.getElementById("signalLoss").style.opacity = "1";
   clearInterval(timer);
 }
 </script>
