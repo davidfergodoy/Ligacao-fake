@@ -28,12 +28,11 @@ body {
   text-align: center;
   padding-top: 120px;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
-h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
+h2 { font-size: 24px; margin-bottom: 10px; }
 
 .status {
   color: gray;
@@ -46,6 +45,7 @@ h2 {
   margin-bottom: 60px;
 }
 
+/* BOTÃO */
 button {
   width: 80px;
   height: 80px;
@@ -57,8 +57,30 @@ button {
   cursor: pointer;
 }
 
-button:active {
-  transform: scale(0.9);
+/* TELA DE FALHA */
+.signal-loss {
+  position: absolute;
+  inset: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 20px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch {
+  animation: glitch 0.15s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(2px, -2px); opacity: 0.8; }
+  25% { transform: translate(-2px, 2px); opacity: 0.6; }
+  50% { transform: translate(1px, -1px); opacity: 1; }
+  75% { transform: translate(-1px, 1px); opacity: 0.7; }
+  100% { transform: translate(0, 0); opacity: 0.9; }
 }
 </style>
 </head>
@@ -67,91 +89,5 @@ button:active {
 
 <div class="phone">
 
-  <h2>Origon Investimentos</h2>
-  <div class="status">Ligação em andamento...</div>
-
-  <div id="timer" class="timer">00:00</div>
-
-  <button onclick="encerrar()">Encerrar</button>
-
-  <!-- ÁUDIO DA LIGAÇÃO -->
-  <audio id="callAudio">
-    <source src="ligacao.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- SOM DE FUNDO OPCIONAL -->
-  <audio id="bgAudio" loop>
-    <source src="call_background.mp3" type="audio/mpeg">
-  </audio>
-
-</div>
-
-<script>
-let segundos = 0;
-let intervalo;
-
-// Contador
-function atualizarTimer() {
-  segundos++;
-
-  const minutos = Math.floor(segundos / 60);
-  const secs = segundos % 60;
-
-  const formatado =
-    String(minutos).padStart(2, '0') + ":" +
-    String(secs).padStart(2, '0');
-
-  document.getElementById("timer").innerText = formatado;
-}
-
-function iniciarTimer() {
-  intervalo = setInterval(atualizarTimer, 1000);
-}
-
-// Iniciar ligação
-window.onload = () => {
-  iniciarTimer();
-
-  const callAudio = document.getElementById("callAudio");
-  const bgAudio = document.getElementById("bgAudio");
-
-  // Tocar áudio principal
-  callAudio.play().catch(() => {
-    console.log("Autoplay bloqueado — aguardando toque.");
-  });
-
-  // Tocar som de fundo (se existir)
-  bgAudio.play().catch(() => {});
-
-  // Caso navegador bloqueie autoplay
-  document.body.addEventListener("click", () => {
-    callAudio.play();
-    bgAudio.play();
-  }, { once: true });
-
-  // Quando o áudio terminar
-  callAudio.onended = () => {
-    document.querySelector(".status").innerText = "Ligação finalizada";
-    clearInterval(intervalo);
-    bgAudio.pause();
-  };
-};
-
-// Encerrar ligação manualmente
-function encerrar() {
-  clearInterval(intervalo);
-
-  const callAudio = document.getElementById("callAudio");
-  const bgAudio = document.getElementById("bgAudio");
-
-  callAudio.pause();
-  bgAudio.pause();
-
-  document.querySelector(".status").innerText = "Ligação encerrada";
-}
-</script>
-
-</body>
-</html>
-
+  <h2>Orig
 
